@@ -19,15 +19,32 @@ export default function HabitModal({ onSave, onClose, initial = null }) {
 
   return (
     <div className="modal-overlay" onClick={(e) => e.target === e.currentTarget && onClose()}>
-      <div className="modal-sheet">
+      {/* ✅ El modal-sheet ahora es flex column con altura máxima limitada */}
+      <div
+        className="modal-sheet"
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          maxHeight: 'calc(90dvh - env(safe-area-inset-bottom, 0px))',
+        }}
+      >
         <div className="modal-handle" />
         <div className="modal-title">
           {initial ? '✏️ Editar hábito' : '✨ Nuevo hábito'}
         </div>
 
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column' }}>
-          {/* Área scrollable */}
-          <div style={{ overflowY: 'auto', maxHeight: '55vh', paddingRight: 2 }}>
+        {/* ✅ El form ocupa el espacio restante y permite que el área interna haga scroll */}
+        <form
+          onSubmit={handleSubmit}
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            flex: 1,
+            minHeight: 0, // ✅ crítico para que flex + scroll funcionen
+          }}
+        >
+          {/* ✅ Área scrollable: ocupa solo el espacio disponible */}
+          <div style={{ overflowY: 'auto', flex: 1, minHeight: 0, paddingRight: 2 }}>
             <div className="form-group">
               <label className="form-label">Nombre del hábito</label>
               <input
@@ -72,8 +89,18 @@ export default function HabitModal({ onSave, onClose, initial = null }) {
             </div>
           </div>
 
-          {/* Botones fijos al fondo, siempre visibles */}
-          <div style={{ display: 'flex', gap: '10px', marginTop: 16, paddingTop: 12, borderTop: '1px solid rgba(255,255,255,0.06)', flexShrink: 0 }}>
+          {/* ✅ Botones fijos al fondo, siempre visibles, con safe-area */}
+          <div
+            style={{
+              display: 'flex',
+              gap: '10px',
+              marginTop: 16,
+              paddingTop: 12,
+              paddingBottom: 'calc(12px + env(safe-area-inset-bottom, 0px))', // ✅ compensa la gesture bar
+              borderTop: '1px solid rgba(255,255,255,0.06)',
+              flexShrink: 0,
+            }}
+          >
             <button
               type="button"
               className="btn btn-ghost"
