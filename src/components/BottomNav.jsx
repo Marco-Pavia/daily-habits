@@ -29,10 +29,20 @@ function IconList({ active }) {
   )
 }
 
+function IconSchool({ active }) {
+  return (
+    <svg viewBox="0 0 24 24" fill={active ? 'currentColor' : 'none'} fillOpacity={active ? 0.15 : 0} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+      <path d="M6 12v5c0 1.66 2.69 3 6 3s6-1.34 6-3v-5" />
+    </svg>
+  )
+}
+
 export default function BottomNav({ active, onChange }) {
   const tabs = [
     { id: 'home', label: 'Hoy', Icon: IconHome },
     { id: 'calendar', label: 'Historial', Icon: IconCalendar },
+    { id: 'school', label: 'Escolar', Icon: IconSchool },
     { id: 'habits', label: 'Hábitos', Icon: IconList },
   ]
 
