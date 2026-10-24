@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-const EMOJIS = ['💪', '🏃', '📚', '🧘', '💧', '🥗', '😴', '🎯', '🖊️', '🎵', '🧹', '🌿', '⭐', '❤️', '🔥', '🧠', '🏋️', '🚴', '🍎', '🌙']
+const EMOJIS = ['💪', '🏃', '📚', '🧘', '💧', '🥗', '😴', '🎯', '✏️', '🎵', '🧹', '🌿', '⭐', '❤️', '🔥', '🧠', '🏋️', '🚴', '🍎', '🌙']
 const COLORS = ['#7c3aed', '#a855f7', '#ec4899', '#ef4444', '#f59e0b', '#10b981', '#3b82f6', '#06b6d4', '#84cc16', '#f97316']
 
 export default function HabitModal({ onSave, onClose, initial = null }) {
@@ -25,51 +25,55 @@ export default function HabitModal({ onSave, onClose, initial = null }) {
           {initial ? '✏️ Editar hábito' : '✨ Nuevo hábito'}
         </div>
 
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label className="form-label">Nombre del hábito</label>
-            <input
-              className="form-input"
-              placeholder="Ej: Ejercicio, Leer, Meditar..."
-              value={name}
-              onChange={e => setName(e.target.value)}
-              autoFocus
-              maxLength={50}
-            />
-          </div>
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column' }}>
+          {/* Área scrollable */}
+          <div style={{ overflowY: 'auto', maxHeight: '55vh', paddingRight: 2 }}>
+            <div className="form-group">
+              <label className="form-label">Nombre del hábito</label>
+              <input
+                className="form-input"
+                placeholder="Ej: Ejercicio, Leer, Meditar..."
+                value={name}
+                onChange={e => setName(e.target.value)}
+                autoFocus
+                maxLength={50}
+              />
+            </div>
 
-          <div className="form-group">
-            <label className="form-label">Emoji</label>
-            <div className="emoji-picker-row">
-              {EMOJIS.map(e => (
-                <button
-                  key={e}
-                  type="button"
-                  className={`emoji-option ${emoji === e ? 'selected' : ''}`}
-                  onClick={() => setEmoji(e)}
-                >
-                  {e}
-                </button>
-              ))}
+            <div className="form-group">
+              <label className="form-label">Emoji</label>
+              <div className="emoji-picker-row">
+                {EMOJIS.map(e => (
+                  <button
+                    key={e}
+                    type="button"
+                    className={`emoji-option ${emoji === e ? 'selected' : ''}`}
+                    onClick={() => setEmoji(e)}
+                  >
+                    {e}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="form-group" style={{ marginBottom: 4 }}>
+              <label className="form-label">Color</label>
+              <div className="color-picker-row">
+                {COLORS.map(c => (
+                  <button
+                    key={c}
+                    type="button"
+                    className={`color-option ${color === c ? 'selected' : ''}`}
+                    style={{ background: c }}
+                    onClick={() => setColor(c)}
+                  />
+                ))}
+              </div>
             </div>
           </div>
 
-          <div className="form-group">
-            <label className="form-label">Color</label>
-            <div className="color-picker-row">
-              {COLORS.map(c => (
-                <button
-                  key={c}
-                  type="button"
-                  className={`color-option ${color === c ? 'selected' : ''}`}
-                  style={{ background: c }}
-                  onClick={() => setColor(c)}
-                />
-              ))}
-            </div>
-          </div>
-
-          <div style={{ display: 'flex', gap: '10px', marginTop: '8px' }}>
+          {/* Botones fijos al fondo, siempre visibles */}
+          <div style={{ display: 'flex', gap: '10px', marginTop: 16, paddingTop: 12, borderTop: '1px solid rgba(255,255,255,0.06)', flexShrink: 0 }}>
             <button
               type="button"
               className="btn btn-ghost"
