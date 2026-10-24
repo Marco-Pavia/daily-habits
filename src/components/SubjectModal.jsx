@@ -18,17 +18,43 @@ export default function SubjectModal({ onSave, onClose, initial = null }) {
   }
 
   return (
-    <div className="modal-overlay" onClick={(e) => e.target === e.currentTarget && onClose()}>
+    <div
+      className="modal-overlay"
+      onClick={(e) => e.target === e.currentTarget && onClose()}
+      style={{
+        // ✅ Overlay flex para centrar el modal vertical y horizontalmente
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '16px',
+        paddingTop: 'calc(16px + env(safe-area-inset-top, 0px))',
+        paddingBottom: 'calc(16px + env(safe-area-inset-bottom, 0px))',
+      }}
+    >
       <div
         className="modal-sheet"
-        style={{ display: 'flex', flexDirection: 'column', maxHeight: 'calc(90dvh - env(safe-area-inset-bottom, 0px))' }}
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          // ✅ Centrado vertical dentro del overlay flex
+          margin: 'auto',
+          // ✅ Altura máxima respetando safe-areas y el padding del overlay
+          maxHeight: 'calc(100dvh - 32px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px))',
+          width: '100%',
+          maxWidth: '480px',
+          borderRadius: '20px',
+        }}
       >
         <div className="modal-handle" />
         <div className="modal-title">
           {initial ? '✏️ Editar materia' : '📚 Nueva materia'}
         </div>
 
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}>
+        <form
+          onSubmit={handleSubmit}
+          style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}
+        >
+          {/* ✅ Área scrollable: ocupa solo el espacio disponible */}
           <div style={{ overflowY: 'auto', flex: 1, minHeight: 0, paddingRight: 2 }}>
             <div className="form-group">
               <label className="form-label">Nombre de la materia</label>
@@ -46,7 +72,14 @@ export default function SubjectModal({ onSave, onClose, initial = null }) {
               <label className="form-label">Emoji</label>
               <div className="emoji-picker-row">
                 {EMOJIS.map(e => (
-                  <button key={e} type="button" className={`emoji-option ${emoji === e ? 'selected' : ''}`} onClick={() => setEmoji(e)}>{e}</button>
+                  <button
+                    key={e}
+                    type="button"
+                    className={`emoji-option ${emoji === e ? 'selected' : ''}`}
+                    onClick={() => setEmoji(e)}
+                  >
+                    {e}
+                  </button>
                 ))}
               </div>
             </div>
@@ -55,14 +88,32 @@ export default function SubjectModal({ onSave, onClose, initial = null }) {
               <label className="form-label">Color</label>
               <div className="color-picker-row">
                 {COLORS.map(c => (
-                  <button key={c} type="button" className={`color-option ${color === c ? 'selected' : ''}`} style={{ background: c }} onClick={() => setColor(c)} />
+                  <button
+                    key={c}
+                    type="button"
+                    className={`color-option ${color === c ? 'selected' : ''}`}
+                    style={{ background: c }}
+                    onClick={() => setColor(c)}
+                  />
                 ))}
               </div>
             </div>
           </div>
 
-          <div style={{ display: 'flex', gap: 10, marginTop: 16, paddingTop: 12, borderTop: '1px solid rgba(255,255,255,0.06)', flexShrink: 0 }}>
-            <button type="button" className="btn btn-ghost" style={{ flex: 1 }} onClick={onClose}>Cancelar</button>
+          {/* ✅ Botones fijos al fondo, siempre visibles */}
+          <div
+            style={{
+              display: 'flex',
+              gap: 10,
+              marginTop: 16,
+              paddingTop: 12,
+              borderTop: '1px solid rgba(255,255,255,0.06)',
+              flexShrink: 0,
+            }}
+          >
+            <button type="button" className="btn btn-ghost" style={{ flex: 1 }} onClick={onClose}>
+              Cancelar
+            </button>
             <button type="submit" className="btn btn-primary" style={{ flex: 2 }} disabled={!name.trim() || saving}>
               {saving ? 'Guardando...' : initial ? 'Guardar' : 'Crear materia'}
             </button>
