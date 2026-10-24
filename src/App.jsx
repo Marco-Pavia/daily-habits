@@ -1,17 +1,20 @@
 import { useState } from 'react'
 import './index.css'
 import { useHabits } from './hooks/useHabits'
+import { useSchool } from './hooks/useSchool'
 import BottomNav from './components/BottomNav'
 import Toast from './components/Toast'
 import HomeScreen from './pages/HomeScreen'
 import CalendarScreen from './pages/CalendarScreen'
 import HabitsScreen from './pages/HabitsScreen'
+import SchoolScreen from './pages/SchoolScreen'
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('home')
   const [toasts, setToasts] = useState([])
 
   const habitData = useHabits()
+  const schoolData = useSchool()
 
   const addToast = (message, type = 'success') => {
     const id = Date.now()
@@ -20,19 +23,22 @@ export default function App() {
 
   const removeToast = (id) => setToasts(prev => prev.filter(t => t.id !== id))
 
-  if (habitData.loading) {
+  const isLoading = habitData.loading || schoolData.loading
+  const hasError = habitData.error || schoolData.error
+
+  if (isLoading) {
     return (
       <>
         <div className="bg-glow" />
         <div className="loading-screen">
           <div className="spinner" />
-          <p className="loading-text">Cargando tus hábitos...</p>
+          <p className="loading-text">Cargando tus datos...</p>
         </div>
       </>
     )
   }
 
-  if (habitData.error) {
+  if (hasError) {
     return (
       <>
         <div className="bg-glow" />
@@ -42,7 +48,7 @@ export default function App() {
             Error conectando con Supabase.<br />
             Verifica tu configuración en <code>.env</code>
           </p>
-          <p style={{ color: 'var(--text-muted)', fontSize: 13 }}>{habitData.error}</p>
+          <p style={{ color: 'var(--text-muted)', fontSize: 13 }}>{habitData.error || schoolData.error}</p>
         </div>
       </>
     )
@@ -69,6 +75,26 @@ export default function App() {
             completions={habitData.completions}
             habits={habitData.habits}
             toDateStr={habitData.toDateStr}
+          />
+        )
+      case 'school':
+        return (
+          <SchoolScreen
+            subjects={schoolData.subjects}
+            addSubject={schoolData.addSubject}
+            updateSubject={schoolData.updateSubject}
+            deleteSubject={schoolData.deleteSubject}
+            addUnit={schoolData.addUnit}
+            deleteUnit={schoolData.deleteUnit}
+            addGrade={schoolData.addGrade}
+            updateGrade={schoolData.updateGrade}
+            deleteGrade={schoolData.deleteGrade}
+            getUnitsForSubject={schoolData.getUnitsForSubject}
+            getGradesForUnit={schoolData.getGradesForUnit}
+            getUnitAverage={schoolData.getUnitAverage}
+            getSubjectAverage={schoolData.getSubjectAverage}
+            getGlobalAverage={schoolData.getGlobalAverage}
+            addToast={addToast}
           />
         )
       case 'habits':

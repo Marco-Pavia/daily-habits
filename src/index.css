@@ -1007,3 +1007,51 @@ body {
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(124, 58, 237, 0.3); border-radius: 99px; }
+
+/* ============================================================
+   SCHOOL SECTION
+   ============================================================ */
+.school-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.school-card:hover {
+  border-color: var(--border);
+  background: var(--bg-card-2);
+}
+
+.school-card:active {
+  transform: scale(0.98);
+}
+
+.school-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  color: var(--purple-light);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 6px 2px;
+  transition: opacity 0.2s;
+}
+
+.school-back-btn:hover {
+  opacity: 0.8;
+}
+
+.school-back-btn:active {
+  transform: scale(0.95);
+}
